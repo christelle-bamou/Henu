@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Gestion des epreuves | Dashboard</title>
+</head>
+<style>
+    /* Barre de navigation */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #031224;
+    color: white;
+    padding: 10px 20px;
+    position: relative;
+}
+
+/* Icône de notification */
+#notification-icon, #search-icon {
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+/* Notifications */
+.notifications {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #f5f6f8;
+    color: #1f1f1f;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.notifications.show {
+    display: block;
+}
+
+.notification-header {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.notification-item img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.notification-item p {
+    margin: 0;
+}
+
+.reply-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.reply-btn:hover {
+    background: #0056b3;
+}
+
+/* Barre de recherche */
+.search-bar {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar.show {
+    display: flex;
+}
+
+.search-bar input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    flex: 1;
+}
+
+.search-bar button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background: #0056b3;
+}
+
+</style>
+<body>
+
+    <div class="top-container">
+        <div class="nav">
+            <div class="logo">
+                <i class='bx bxl-codepen'></i>
+                <a href="index.html">PostEpreuve</a>
+            </div>
+
+            <div class="nav-links">
+                <a href="tb1.html" class="active">Tableau de bord</a>
+                <a href="stat.html">Statistiques des tests </a>
+                <a href="propr.html">ventes des epreuves</a>
+                <a href="param.html">Paramètres</a>
+            </div>
+
+            <div class="right-section">
+                <i class='bx bx-bell' id="notification-icon"></i>
+                <i class='bx bx-search' id="search-icon"></i>
+
+                <div class="profile">
+                    <div class="info">
+                        <img src="user3.jpg" alt="Profile Picture">
+                        <div>
+                            <a href="profile.html">ANTHONY</a>
+                            <p>Administrateur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="notifications" id="notifications">
+            <div class="notification-header">
+                <h4>Notifications</h4>
+                <button onclick="closeNotifications()">Fermer</button>
+            </div>
+            <div class="notification-item">
+                <img src="user1.jpg" alt="Marie Dubois">
+                <div>
+                    <p><strong>Marie Dubois</strong> a demandé des informations sur <a href="#">Villa de Luxe</a></p>
+                    <button class="reply-btn" onclick="replyToClient('Marie Dubois')">Répondre</button>
+                </div>
+            </div>
+            <div class="notification-item">
+                <img src="manqh.png" alt="Jean Dupont">
+                <div>
+                    <p><strong>Jean Dupont</strong> a fait une offre sur <a href="#">Appartement T3</a></p>
+                    <button class="reply-btn" onclick="replyToClient('Jean Dupont')">Répondre</button>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="status">
+            <div class="header">
+                <h4 id="big">Vos epreuves</h4>
+                <h4 id="small">Activité Hebdomadaire</h4>
+            </div>
+
+            <div class="items-list">
+                <div class="item">
+                    <div class="info">
+                        <div>
+                            <h5>epreuves de mathématique</h5>
+                            <p>- 3 tests programmés</p>
+                            <p>- 1 vente realisées</p>
+                        </div>
+                        <i class='bx bx-home'></i>
+                    </div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="info">
+                        <div>
+                            <h5>epreuves de physique</h5>
+                            <p>- 2 tests programmés</p>
+                            <p>- 1 vente realisées</p>
+                        </div>
+                        <i class='bx bx-building'></i>
+                    </div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="info">
+                        <div>
+                            <h5>epreuves d'Anglais</h5>
+                            <p>- 4 tests programmés</p>
+                            <p>- 2 vente réalisées</p>
+                        </div>
+                        <i class='bx bx-building-house'></i>
+                    </div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="item">
+                    <canvas class="activity-chart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="bottom-container">
+
+        <div class="prog-status">
+            <div class="header">
+                <h4>Statut des epreuves</h4>
+                <div class="tabs">
+                    <a href="#" class="active">1Y</a>
+                    <a href="#">6M</a>
+                    <a href="#">3M</a>
+                </div>
+            </div>
+
+            <div class="details">
+                <div class="item">
+                    <h2>15</h2>
+                    <p>epreuves Actives</p>
+                </div>
+                <div class="separator"></div>
+                <div class="item">
+                    <h2>8</h2>
+                    <p>epreuves Vendues</p>
+                </div>
+            </div>
+
+            <canvas class="prog-chart"></canvas>
+
+        </div>
+
+        <div class="popular">
+            <div class="header">
+                <h4>epreuves en Vedette</h4>
+                <a href="luxe.html"># Vedette</a>
+            </div>
+
+            <img src="villa.jpeg" alt="Propriétés en Vedette">
+            <div class="audio">
+                <i class='bx bx-podcast'></i>
+                <a href="podcast.html">Podcast : Maîtriser la Vente des epreuves</a>
+            </div>
+            <p>Apprenez a gerer vos epreuves avec succès.</p>
+            <div class="listen">
+                <div class="author">
+                    <img src="user1.jpg" alt="Author">
+                    <div>
+                        <a href="profile.html">ANTHONY</a>
+                        <p>Admistrateur</p>
+                    </div>
+                </div>
+                <button onclick="window.location.href='podcast.html'">Écouter<i class='bx bx-right-arrow-alt'></i></button>
+            </div>
+
+        </div>
+
+        <div class="upcoming">
+
+            <div class="header">
+                <h4>Horaire</h4>
+                <a href="#">Juillet <i class='bx bx-chevron-down'></i></a>
+            </div>
+
+            <div class="dates">
+                <div class="item">
+                    <h5>Lun</h5>
+                    <a href="#">12</a>
+                </div>
+                <div class="item active">
+                    <h5>Mar</h5>
+                    <a href="#">13</a>
+                </div>
+                <div class="item">
+                    <h5>Mer</h5>
+                    <a href="#">14</a>
+                </div>
+                <div class="item">
+                    <h5>Jeu</h5>
+                    <a href="#">15</a>
+                </div>
+                <div class="item">
+                    <h5>Ven</h5>
+                    <a href="#">16</a>
+                </div>
+                <div class="item">
+                    <h5>Sam</h5>
+                    <a href="#">17</a>
+                </div>
+                <div class="item">
+                    <h5>Dim</h5>
+                    <a href="#">18</a>
+                </div>
+            </div>
+
+            <div class="events">
+                <div class="item">
+                    <div>
+                        <i class='bx bx-time'></i>
+                        <div class="event-info">
+                            <a href="#">Visite des epreuves vip Luxe</a>
+                            <p>10:00-11:30</p>
+                        </div>
+                    </div>
+                    <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+                <div class="item">
+                    <div>
+                        <i class='bx bx-time'></i>
+                        <div class="event-info">
+                            <a href="#">Visite vip T3</a>
+                            <p>13:30-15:00</p>
+                        </div>
+                    </div>
+                    <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+                <div class="item">
+                    <div>
+                        <i class='bx bx-time'></i>
+                        <div class="event-info">
+                            <a href="#">Visite vip 4</a>
+                            <p>11:30-13:00</p>
+                        </div>
+                    </div>
+                    <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+                <div class="item">
+                    <div>
+                        <i class='bx bx-time'></i>
+                        <div class="event-info">
+                            <a href="#">Visite vip 5</a>
+                            <p>10:00-11:30</p>
+                        </div>
+                    </div>
+                    <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script1.js"></script>
+    <script>
+        document.getElementById('notification-icon').addEventListener('click', function() {
+            document.getElementById('notifications').classList.toggle('show');
+        });
+
+        document.getElementById('search-icon').addEventListener('click', function() {
+            document.getElementById('search-bar').classList.toggle('show');
+        });
+
+        function closeNotifications() {
+            document.getElementById('notifications').classList.remove('show');
+        }
+
+        function replyToClient(client) {
+            alert(`Répondre à ${client}`);
+        }
+
+        function search() {
+            const query = document.getElementById('search-input').value;
+            alert(`Recherche: ${query}`);
+        }
+    </script>
+</body>
+
+</html>

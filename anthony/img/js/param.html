@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Paramètres | Gestion des Épreuves</title>
+</head>
+<style>
+    /* style.css */
+
+    /* Styles communs à toutes les pages */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .top-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        padding: 20px;
+        background: #031224;
+    }
+
+    .nav-links a {
+        margin-right: 20px;
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .nav-links a.active {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .settings-container {
+        padding: 20px;
+        background-color: #fff;
+        margin: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .settings-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    .section h5 {
+        margin-bottom: 10px;
+    }
+
+    .section label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .section input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+
+    .section input[type="checkbox"] {
+        width: auto;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+</style>
+<body>
+
+    <div class="top-container">
+
+        <div class="nav">
+            <div class="logo">
+                <i class='bx bxl-codepen'></i>
+                <a href="#">Épreuves</a>
+            </div>
+
+            <div class="nav-links">
+                <a href="dashboard.html">Tableau de bord</a>
+                <a href="stats.html">Statistiques</a>
+                <a href="exams.html">Épreuves</a>
+                <a href="settings.html" class="active">Paramètres</a>
+            </div>
+
+            <div class="right-section">
+                <i class='bx bx-bell'></i>
+                <i class='bx bx-search'></i>
+
+                <div class="profile">
+                    <div class="info">
+                        <img src="assets/profile.png" alt="Profile Picture">
+                        <div>
+                            <a href="#">ANTHONY</a>
+                            <p>Administrateur</p>
+                        </div>
+                    </div>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-container">
+
+            <div class="header">
+                <h4>Paramètres des Épreuves</h4>
+            </div>
+
+            <div class="settings-content">
+                <div class="section">
+                    <h5>Informations du Profil</h5>
+                    <form id="profileForm">
+                        <label for="fullName">Nom Complet:</label>
+                        <input type="text" id="fullName" name="fullName" value="Alex Johnson" required>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="alex.johnson@example.com" required>
+
+                        <label for="phone">Téléphone:</label>
+                        <input type="tel" id="phone" name="phone" value="+237 690 522 123" required>
+
+                        <button type="submit" class="btn-primary">Sauvegarder</button>
+                    </form>
+                </div>
+
+                <div class="section">
+                    <h5>Paramètres de Notification</h5>
+                    <form id="notificationForm">
+                        <label for="examUpdates">Notifications des Épreuves:</label>
+                        <input type="checkbox" id="examUpdates" name="examUpdates" checked>
+                        
+                        <label for="reminders">Rappels des Épreuves:</label>
+                        <input type="checkbox" id="reminders" name="reminders">
+
+                        <button type="submit" class="btn-primary">Sauvegarder</button>
+                    </form>
+                </div>
+
+                <div class="section">
+                    <h5>Paramètres de Sécurité</h5>
+                    <form id="securityForm">
+                        <label for="currentPassword">Mot de passe actuel:</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+
+                        <label for="newPassword">Nouveau mot de passe:</label>
+                        <input type="password" id="newPassword" name="newPassword" required>
+
+                        <label for="confirmPassword">Confirmer le nouveau mot de passe:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+                        <button type="submit" class="btn-primary">Changer le Mot de Passe</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Gestion des formulaires
+        document.getElementById('profileForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Informations du profil mises à jour.');
+        });
+
+        document.getElementById('notificationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Paramètres de notification mis à jour.');
+        });
+
+        document.getElementById('securityForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword === confirmPassword) {
+                alert('Mot de passe changé.');
+            } else {
+                alert('Les mots de passe ne correspondent pas.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
